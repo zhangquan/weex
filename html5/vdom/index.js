@@ -2,32 +2,47 @@
  * @fileOverview
  * A simple virtual dom implementation
  */
-
-import Listener from './listener'
-import { extend } from '../shared'
+// import { extend } from '../shared'
+import { extend } from '../shared/utils'
 
 const DEFAULT_TAG_NAME = 'div'
 
 export const instanceMap = {}
 let nextNodeRef = 1
 
-export function Document (id, url, handler) {
+export function Document (id, url, handler, Listener) {
   id = id ? id.toString() : ''
   this.id = id
   this.URL = url
 
   instanceMap[id] = this
   this.nodeMap = {}
-  this.listener = new Listener(id, handler || genCallTasks(id))
+  Listener && (this.listener = new Listener(id, handler || genCallTasks(id)))
   this.createDocumentElement()
 }
 
 function genCallTasks (id) {
+  // @todo: The `callAddElement` API should be re-design immediately
+  // because its public and global and without config opportunity.
+  const hasAddElementHandler = typeof callAddElement === 'function'
   return (tasks) => {
     if (!Array.isArray(tasks)) {
       tasks = [tasks]
     }
-    return callNative(id, tasks, '-1')
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i]
+      let returnValue
+      if (hasAddElementHandler && task.module === 'dom' && task.method === 'addElement') {
+        const [ref, json, index] = task.args
+        returnValue = callAddElement(id, ref, json, index, '-1')
+      }
+      else {
+        returnValue = callNative(id, [task], '-1')
+      }
+      if (returnValue === -1) {
+        return returnValue
+      }
+    }
   }
 }
 
@@ -86,6 +101,7 @@ function appendBody (doc, node, before) {
       node.docId = doc.id
       node.ownerDocument = doc
       node.parentNode = documentElement
+      linkParent(node, documentElement)
     }
     else {
       node.children.forEach(child => {
@@ -444,7 +460,7 @@ function removeIndex (target, list, changeSibling) {
 }
 
 Element.prototype.setAttr = function (key, value, silent) {
-  if (this.attr[key] === value) {
+  if (this.attr[key] === value && silent !== false) {
     return
   }
   this.attr[key] = value
@@ -455,7 +471,7 @@ Element.prototype.setAttr = function (key, value, silent) {
 }
 
 Element.prototype.setStyle = function (key, value, silent) {
-  if (this.style[key] === value) {
+  if (this.style[key] === value && silent !== false) {
     return
   }
   this.style[key] = value
@@ -465,8 +481,15 @@ Element.prototype.setStyle = function (key, value, silent) {
   }
 }
 
+Element.prototype.resetClassStyle = function () {
+  for (const key in this.classStyle) {
+    this.classStyle[key] = ''
+  }
+}
+
 Element.prototype.setClassStyle = function (classStyle) {
-  this.classStyle = classStyle
+  this.resetClassStyle()
+  extend(this.classStyle, classStyle)
   if (this.docId) {
     const listener = instanceMap[this.docId].listener
     listener.setStyles(this.ref, this.toStyle())

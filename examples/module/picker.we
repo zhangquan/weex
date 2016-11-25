@@ -12,8 +12,11 @@
       pick: function() {
         var data = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
         var self = this;
-        picker.pick(data, 0, function(index){
-          self.date = data[index]
+        picker.pick({items:data,index:0}, function(result){
+          if(result.result == "success"){
+            self.date = data[result.data]
+          }
+
         })
       }
     }

@@ -58,12 +58,22 @@ Picker.prototype = {
 
   _addEvent: function () {
     const confirmCallback = () => {
-      this.confirmCallback && this.sender.performCallback(this.confirmCallback, this.currentIndex)
+      const result = {
+        result: 'success',
+        data: this.currentIndex
+      }
+
+      this.confirmCallback && this.sender.performCallback(this.confirmCallback, result)
       this.hide()
     }
 
     const cancelCallback = () => {
       this.cancelCallback && this.sender.performCallback(this.cancelCallback)
+      const result = {
+        result: 'cancel',
+        data: this.currentIndex
+      }
+      this.confirmCallback && this.sender.performCallback(this.confirmCallback, result)
       this.hide()
     }
 
@@ -122,7 +132,9 @@ Picker.prototype = {
 }
 
 const pickerModule = {
-  pick: function (items, index, confirmCallback, cancelCallback) {
+  pick: function (options, confirmCallback, cancelCallback) {
+    const items = options.items
+    const index = options.index
     new Picker({
       data: items,
       currentIndex: index,
@@ -136,7 +148,7 @@ const pickerModule = {
 const meta = {
   picker: [{
     name: 'pick',
-    args: ['array', 'number', 'function']
+    args: ['object', 'function']
   }]
 }
 

@@ -284,6 +284,7 @@
     filter: alpha(opacity=0);
     opacity: 0;
     height: 0.53rem;
+    width: 100%;
 }
 
 .pika-prev,

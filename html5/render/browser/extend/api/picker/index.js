@@ -156,13 +156,6 @@ const pickerModule = {
       format: 'YYYY-MM-DD',
       minDate: moment(options.min, 'YYYY-MM-DD').toDate(),
       maxDate: moment(options.max, 'YYYY-MM-DD').toDate(),
-      i18n: {
-        previousMonth: '上月',
-        nextMonth: '下月',
-        months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-        weekdays: ['星期日', '星期一', '星期二', '星期三', '星期三', '星期四', '星期五', '星期六'],
-        weekdaysShort: ['日', '一', '二', '三', '四', '五', '六']
-      },
       onSelect: function (date) {
         confirmCallback && self.sender.performCallback(confirmCallback, { result: 'success', data: moment(date).format('YYYY-MM-DD') })
         picker.destroy()

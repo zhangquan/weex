@@ -14,7 +14,7 @@
   module.exports = {
     data: {
       value: '',
-      index: 0
+      index: 1
     },
     methods: {
       pick: function() {

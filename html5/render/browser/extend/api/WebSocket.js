@@ -15,35 +15,27 @@ const WebSocketIns = {
     const self = this
     instance = new WebSocket(url, protocol)
     instance.onopen = function (e) {
-      setTimeout(function () {
-        if (callback.onopen) {
-          self.sender.performCallback(callback.onopen, { type: e.type }, true)
-        }
-      }, 10)
+      if (callback.onopen) {
+        self.sender.performCallback(callback.onopen, { type: e.type }, true)
+      }
     }
 
     instance.onmessage = function (e) {
-      setTimeout(function () {
-        if (callback.onmessage) {
-          self.sender.performCallback(callback.onmessage, { origin: e.origin, data: e.data, source: e.data }, true)
-        }
-      }, 10)
+      if (callback.onmessage) {
+        self.sender.performCallback(callback.onmessage, { origin: e.origin, data: e.data, source: e.data }, true)
+      }
     }
 
     instance.onerror = function (e) {
-      setTimeout(function () {
-        if (callback.onerror) {
-          self.sender.performCallback(callback.onerror, { code: e.code, data: e.data })
-        }
-      }, 10)
+      if (callback.onerror) {
+        self.sender.performCallback(callback.onerror, { code: e.code, data: e.data })
+      }
     }
 
     instance.onclose = function (e) {
-      setTimeout(function () {
-        if (callback.onclose) {
-          self.sender.performCallback(callback.onclose, { data: e.data, code: e.code, reason: e.reason })
-        }
-      }, 10)
+      if (callback.onclose) {
+        self.sender.performCallback(callback.onclose, { data: e.data, code: e.code, reason: e.reason })
+      }
     }
   },
 

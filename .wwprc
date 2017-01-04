@@ -17,7 +17,8 @@
     "a",
     "embed",
     "spinner",
-    "web"
+    "web",
+    "neighbor"
   ],
   "apis": [
     "animation",
@@ -33,5 +34,8 @@
     "stream",
     "webview",
     "WebSocket"
+  ],
+  "npm": [
+    "weex-picker"
   ]
 }

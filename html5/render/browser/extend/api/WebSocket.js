@@ -67,23 +67,23 @@ const WebSocketIns = {
     }
   },
 
-  // onerror: function (func) {
-  //   if (instance) {
-  //     callback.onerror = func
-  //   }
-  // },
-  //
+  onerror: function (func) {
+    if (instance) {
+      callback.onerror = func
+    }
+  },
+
   onmessage: function (func) {
     if (instance) {
       callback.onmessage = func
     }
   },
-  //
-  // onclose: function (func) {
-  //   if (instance) {
-  //     callback.onclose = func
-  //   }
-  // }
+
+  onclose: function (func) {
+    if (instance) {
+      callback.onclose = func
+    }
+  }
 }
 
 const meta = {

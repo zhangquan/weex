@@ -33,7 +33,7 @@
     "storage",
     "stream",
     "webview",
-    "WebSocket"
+    "webSocket"
   ],
   "npm": [
     "weex-picker"

@@ -4,7 +4,7 @@
 let instance
 let callback = { }
 
-const WebSocketIns = {
+const webSocketIns = {
 
   WebSocket: function (url, protocol) {
     if (instance) {
@@ -105,6 +105,6 @@ const meta = {
 
 export default {
   init: function (Weex) {
-    Weex.registerApiModule('WebSocket', WebSocketIns, meta)
+    Weex.registerApiModule('webSocket', webSocketIns, meta)
   }
 }
